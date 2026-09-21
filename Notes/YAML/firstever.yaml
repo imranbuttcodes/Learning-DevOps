@@ -1,0 +1,95 @@
+# Learning YAML
+person: 
+  name: imran
+  bro: true
+  languages: blah blah blah
+  skills:
+    - Python
+    - C++
+    - FastAPI
+    - Docker
+    - Git
+  age: 100
+  gpa: 100
+  gruaduated: false
+
+# multi line strings: we have two options "|" and ">"
+
+instructions: |
+  open vs code
+  create a new file
+  use .cpp extension
+  done
+
+
+instructions_2: >
+  open vs code
+  create a new file
+  use .cpp extension
+  done
+
+
+# boolean stuff  here true = yes = on, false = no = off
+
+is_green: true
+is_yellow: yes
+is_blue: on
+is_red: no
+is_deployed: false
+created_: off
+
+
+#About Null , here null = ~
+
+code_completed: null
+complted_code: ~
+
+# timestamp
+
+monrning: 2026-11-19
+local_time: 2026-11-19 14:42:12
+
+# collections or arrays or list
+
+lang:
+  - Python
+  - cpp
+  - go
+
+lang2: [Python, cpp, go]
+
+times: [3, 2, 1]
+
+times_: [true, "233", 129]
+
+
+default_instructions: &default
+  ram: "16gb"
+  ssd: 256gb
+
+new_pc:
+  <<: *default
+  gpu: yoah
+
+new_pc2:
+  <<: *default
+  gpu: yoah_bro
+
+
+# what happend, we just referenced new_pc, new_pc2 with default_instructions so that we don't repeat our selves, 
+
+
+# explicit data typing
+
+zip_code: !!str 1234
+
+count: !!int 1234
+
+#unique sets
+
+uniqque_lang: !!set
+  ? Python
+  ? go
+  ? rust
+  
+
