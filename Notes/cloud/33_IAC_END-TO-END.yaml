@@ -1,0 +1,57 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: Create an EC2 web server with 8 GB EBS volume
+
+Resources:
+
+  WebServerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow HTTP and SSH access
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+
+  WebServer:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-0fef201115eefe936
+      InstanceType: t3.micro
+      KeyName: mywebserver-key
+
+      SecurityGroupIds:
+        - !GetAtt WebServerSecurityGroup.GroupId
+
+      BlockDeviceMappings:
+        - DeviceName: /dev/xvda
+          Ebs:
+            VolumeSize: 8
+            VolumeType: gp3
+            DeleteOnTermination: true
+
+      UserData:
+        Fn::Base64: |
+          #!/bin/bash
+
+          dnf update -y
+          dnf install -y nginx
+
+          systemctl enable nginx
+          systemctl start nginx
+
+          echo "<html>
+          <head>
+            <title>Hello World</title>
+          </head>
+          <body>
+            <h1>Hello, World!</h1>
+            <p>Deployed using AWS CloudFormation.</p>
+          </body>
+          </html>" > /usr/share/nginx/html/index.html
